@@ -33,4 +33,19 @@ router.get('/perfil', authMiddleware, (req: Request, res: Response) => {
   });
 });
 
+// Rota de Atualização
+router.put('/user', authMiddleware, async (req: Request, res: Response) => {
+  const { nome, email } = req.body;
+  const userId = req.user?.id;
+  await User.update({ nome, email }, { where: { id: userId } });
+  res.json({ message: "Dados atualizados com sucesso!" });
+});
+
+// Rota de Deleção
+router.delete('/user', authMiddleware, async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  await User.destroy({ where: { id: userId } });
+  res.json({ message: "Conta removida do sistema." });
+});
+
 export default router;
